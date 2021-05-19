@@ -176,8 +176,10 @@ void dfs(graph* G)
     time = 0;
 
     fl(i,0,G->vertices){
-        if(visited[i]==0)
+        if(visited[i]==0){
+	    printf("Starting from : %d", i);
             time = DFS_visit(G,i,time,visited,dist,parent,f);
+	}
     }
     nline;
     printf("\n\nParents :");

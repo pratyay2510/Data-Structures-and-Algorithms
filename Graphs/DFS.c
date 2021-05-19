@@ -5,6 +5,7 @@
 #define nline		printf("\n")
 #define fl(i,a,b)	for(i=a; i<b; i++)
 #define N 40
+#define none 999
 
 typedef struct listnode
 {
@@ -38,18 +39,16 @@ void dfs(graph* G);
 int main()
 {
     // create the graph given in above figure
-    int V = 8,i;
+    int V = 6,i;
     graph* g = creategraph(V);
     addEdge(g, 0, 1);
     addEdge(g, 0, 2);
     addEdge(g, 1, 3);
-    addEdge(g, 3, 4);
-    addEdge(g, 3, 5);
+    addEdge(g, 2, 1);
+    addEdge(g, 3, 2);
+    addEdge(g, 4, 3);
     addEdge(g, 4, 5);
-    addEdge(g, 4, 6);
-    addEdge(g, 5, 6);
-    addEdge(g, 5, 7);
-    addEdge(g, 6, 7);
+    addEdge(g, 5, 5);
 
 	printf("Traversing the adjacency list : ");
 	nline;
@@ -109,11 +108,7 @@ void addEdge(graph* G, int src, int dest)
 	listnode* newNode = getnode(dest);                  // Add an edge from src to dest.
     newNode->next = G->array[src].head;             //The next pointer points to the existing head of the list
     G->array[src].head = newNode;                   //The new node becomes the head of the list
-
-
-    newNode = getnode(src);                         // Since graph is undirected, add an edge from dest to src also
-    newNode->next = G->array[dest].head;
-    G->array[dest].head = newNode;
+                                                    // Since graph is directed, we dont need to add an edge from dest to src.
 
 }
 
@@ -176,7 +171,7 @@ void dfs(graph* G)
 	fl(i,0,G->vertices){
         visited[i] = 0;
         dist[i] = 0;
-        parent[i] = NULL;
+        parent[i] = none;
     }
     time = 0;
 
@@ -188,7 +183,11 @@ void dfs(graph* G)
     printf("\n\nParents :");
     for(i=0;i<G->vertices;i++)
     {
-        printf("\nVertex: %d, Parent: %d",i,parent[i]);
+        if(parent[i] == none){
+            printf("\nVertex: %d, Parent: NULL",i);
+        }
+        else
+            printf("\nVertex: %d, Parent: %d",i,parent[i]);
     }
     printf("\n\nTime stamps :");
     for(i=0;i<G->vertices;i++)
@@ -196,3 +195,4 @@ void dfs(graph* G)
         printf("\nVertex: %d, Entry time: %d, Exit time: %d",i,dist[i],f[i]);
     }
 }
+
